@@ -18,28 +18,31 @@ class rpolygon(list):
         return list.__new__(cls, *args, **kwargs)
 
     def area(self):
+        """[summary]
+
+        Returns:
+            [type] -- [description]
+        """
         cur = iter(self)
         p0 = next(cur)
         x0 = p0.x
         yi = p0.y
         sum = 0
-        while True:
-            try:
-                p = next(cur)
-                sum += (p.y - yi) * (p.x - x0)
-                yi = p.y
-            except StopIteration:
-                break
+        for p in cur:
+            sum += (p.y - yi) * (p.x - x0)
+            yi = p.y
         return sum
-    # bool contains(point<U>& rhs)
 
 
 def create_xmono_rpolygon(lst):
-    # def l2r(a, b):
-    #     return a.x < b.x
+    """[summary] (TODO: partition() is not the same as C++'s std::partition())
 
-    # def r2l(a, b):
-    #     return b.x < a.x
+    Arguments:
+        lst {[type]} -- [description]
+
+    Returns:
+        [type] -- [description]
+    """
 
     max_it = max(lst, key=lambda a: a.x)
     pivot = max_it.y
