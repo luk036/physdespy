@@ -1,20 +1,15 @@
-from random import randint
-
 from physdespy.recti import point
-from physdespy.rpolygon import create_xmono_rpolygon, create_ymono_rpolygon, rpolygon
+from physdespy.rpolygon import create_ymono_rpolygon
 
 
 def test_RPolygon():
-    N = 100
-    S = [point(randint(0, 99), randint(0, 99)) for _ in range(N)]
-    for r in S:
-        print(r)
+    coords = [(-2, 2), (0, -1), (-5, 1), (-2, 4), (0, -4), (-4, 3),
+              (-6, -2), (5, 1), (2, 2), (3, -3), (-3, -4), (1, 4)]
+    S = [point(x, y) for (x, y) in coords]
 
-    R = rpolygon(S)
-    print(R.area())
+    P = create_ymono_rpolygon(S)
+    print('----------------------')
+    for v in P:
+        print(v)
 
-    _ = create_xmono_rpolygon(S)
-    # print(R1.area())
-
-    _ = create_ymono_rpolygon(S)
-    # print(R2.area())
+    assert (False)

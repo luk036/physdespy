@@ -34,6 +34,58 @@ class rpolygon(list):
         return sum
 
 
+def create_ymono_rpolygon(lst):
+    max_pt = max(lst, key=lambda a: (a.y, a.x))
+    min_pt = min(lst, key=lambda a: (a.y, a.x))
+    dx = max_pt.x - min_pt.x
+    dy = max_pt.y - min_pt.y
+
+    def right_left(a):
+        return dx * (a.y - min_pt.y) < (a.x - min_pt.x) * dy
+
+    def left_right(a):
+        return dx * (a.y - min_pt.y) > (a.x - min_pt.x) * dy
+
+    if dx < 0:
+        [lst1, lst2] = partition(left_right, lst)
+    else:
+        [lst1, lst2] = partition(right_left, lst)
+
+    lst1 = sorted(lst1, key=lambda a: (a.y, a.x))
+    lst2 = sorted(lst2, key=lambda a: (a.y, a.x), reverse=True)
+    return rpolygon(lst1 + lst2)
+
+
+def create_test_polygon(lst):
+    max_pt = max(lst, key=lambda a: (a.y, a.x))
+    min_pt = min(lst, key=lambda a: (a.y, a.x))
+    dx = max_pt.x - min_pt.x
+    dy = max_pt.y - min_pt.y
+
+    def right_left(a):
+        return dx * (a.y - min_pt.y) < (a.x - min_pt.x) * dy
+
+    [lst1, lst2] = partition(right_left, lst)
+    lst1 = list(lst1)  # note!!!!
+    lst2 = list(lst2)  # note!!!!
+    max_pt1 = max(lst1, key=lambda a: (a.x, a.y))
+    [lst3, lst4] = partition(lambda a: a.y < max_pt1.y, lst1)
+    min_pt2 = min(lst2, key=lambda a: (a.x, a.y))
+    [lst5, lst6] = partition(lambda a: a.y > min_pt2.y, lst2)
+
+    if dx < 0:  # left -> right
+        lst3 = sorted(lst3, key=lambda a: (a.y, a.x), reverse=True)
+        lst4 = sorted(lst4, key=lambda a: (a.x, a.y), reverse=True)
+        lst5 = sorted(lst5, key=lambda a: (a.y, a.x))
+        lst6 = sorted(lst6, key=lambda a: (a.x, a.y))
+    else:  # right -> left
+        lst3 = sorted(lst3, key=lambda a: (a.x, a.y))
+        lst4 = sorted(lst4, key=lambda a: (a.y, a.x))
+        lst5 = sorted(lst5, key=lambda a: (a.x, a.y), reverse=True)
+        lst6 = sorted(lst6, key=lambda a: (a.y, a.x), reverse=True)
+    return rpolygon(lst3 + lst4 + lst5 + lst6)
+
+
 def create_xmono_rpolygon(lst):
     """[summary] (TODO: partition() is not the same as C++'s std::partition())
 
@@ -44,8 +96,8 @@ def create_xmono_rpolygon(lst):
         [type] -- [description]
     """
 
-    max_it = max(lst, key=lambda a: a.x)
-    pivot = max_it.y
+    max_pt = max(lst, key=lambda a: a.x)
+    pivot = max_pt.y
 
     def downup(a):
         return a.y < pivot
@@ -53,35 +105,11 @@ def create_xmono_rpolygon(lst):
     def updown(a):
         return pivot < a.y
 
-    min_it = min(lst, key=lambda a: a.x)
-    dir = downup if min_it.y < pivot else updown
+    min_pt = min(lst, key=lambda a: a.x)
+    dir = downup if min_pt.y < pivot else updown
     [lst1, lst2] = partition(dir, lst)
 
     sorted(lst1, key=lambda a: a.x)
     sorted(lst2, key=lambda a: a.x, reverse=True)
 
-    return rpolygon([p for p in lst1] + [p for p in lst2])
-
-
-def create_ymono_rpolygon(lst):
-    # def b2t(a, b):
-    #     return a.y < b.y
-
-    # def t2b(a, b):
-    #     return b.y < a.y
-
-    max_it = max(lst, key=lambda a: a.y)
-    pivot = max_it.x
-
-    def leftright(a):
-        return a.x < pivot
-
-    def rightleft(a):
-        return pivot < a.x
-
-    min_it = min(lst, key=lambda a: a.y)
-    dir = leftright if min_it.x < pivot else rightleft
-    [lst1, lst2] = partition(dir, lst)
-    sorted(lst1, key=lambda a: a.y)
-    sorted(lst2, key=lambda a: a.y, reverse=True)
     return rpolygon([p for p in lst1] + [p for p in lst2])
