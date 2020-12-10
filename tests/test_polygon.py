@@ -13,4 +13,4 @@ def test_polygon():
     for v in P:
         print(v)
 
-    assert (False)
+    # assert (False)

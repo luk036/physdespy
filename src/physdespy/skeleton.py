@@ -5,7 +5,7 @@ console script. To run this script uncomment the following lines in the
 [options.entry_points] section in setup.cfg:
 
     console_scripts =
-         fibonacci = ellpy.skeleton:run
+         fibonacci = physdespy.skeleton:run
 
 Then run `python setup.py install` which will install the command `fibonacci`
 inside your current environment.
@@ -19,7 +19,7 @@ import argparse
 import logging
 import sys
 
-from ellpy import __version__
+from physdespy import __version__
 
 __author__ = "Wai-Shing Luk"
 __copyright__ = "Wai-Shing Luk"
@@ -58,7 +58,7 @@ def parse_args(args):
     parser.add_argument(
         "--version",
         action="version",
-        version="ellpy {ver}".format(ver=__version__))
+        version="physdespy {ver}".format(ver=__version__))
     parser.add_argument(
         dest="n",
         help="n-th Fibonacci number",

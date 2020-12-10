@@ -12,4 +12,4 @@ def test_RPolygon():
     for v in P:
         print(v)
 
-    assert (False)
+    # assert (False)
