@@ -1,4 +1,4 @@
-from physdespy.vector2 import vector2
+from physdespy.recti import vector2
 
 
 def test_vector2():

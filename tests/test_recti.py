@@ -38,7 +38,8 @@ def test_Interval():
     assert b != a
 
     assert a.contains(4)
-    assert a.contains(8)
+    assert a.contains(b)
+    assert not b.contains(a)
 
 
 def test_Rectangle():
