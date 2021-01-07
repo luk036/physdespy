@@ -119,7 +119,7 @@ class point:
         elif isinstance(rhs, point):
             return vector2(self.x - rhs.x, self.y - rhs.y)
         else:
-            raise AssertionError()
+            raise NotImplementedError()
 
     def flip(self):
         return point(self.y, self.x)
