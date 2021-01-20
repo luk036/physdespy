@@ -15,7 +15,6 @@ RUN apt-get update \
   neovim \
   asciinema \
   tmux \
-  cmatrix \
   cowsay \
   fortune \
   figlet \
