@@ -4,7 +4,7 @@ physical design python code
 
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/luk036/physdespy)
 ![Python application](https://github.com/luk036/physdespy/workflows/Python%20application/badge.svg)
-[![Build Status](https://travis-ci.org/luk036/physdespy.svg?branch=master)](https://travis-ci.org/luk036/physdespy)
+[![Build Status](https://travis-ci.com/luk036/physdespy.svg?branch=master)](https://travis-ci.com/luk036/physdespy)
 [![Build status](https://ci.appveyor.com/api/projects/status/0v1cf05tcueny7d9?svg=true)](https://ci.appveyor.com/project/luk036/physdespy)
 [![Documentation Status](https://readthedocs.org/projects/physdespy/badge/?version=latest)](https://physdespy.readthedocs.io/en/latest/?badge=latest)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a2f75bd3cc1e4c34be4741bdd61168ba)](https://app.codacy.com/app/luk036/physdespy?utm_source=github.com&utm_medium=referral&utm_content=luk036/physdespy&utm_campaign=badger)
