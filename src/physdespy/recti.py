@@ -58,6 +58,9 @@ class vector2:
     def __ne__(self, rhs) -> bool:
         return not self.__eq__(rhs)
 
+    def cross(self, rhs):
+        return self._x * rhs._y - rhs._x * self._y
+
     def __str__(self):
         return '<{self.x}, {self.y}>'.format(self=self)
 

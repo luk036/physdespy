@@ -1,24 +1,29 @@
 from itertools import filterfalse, tee
 
+from .recti import vector2
+
+
+class polygon:
+    def __init__(self, coords):
+        self._origin = coords[0]
+        self._vecs = list(c - coords[0] for c in coords[1:])
+
+    def __iadd__(self, rhs: vector2):
+        self._origin += rhs
+        return self
+
+    def signed_area_x2(self):
+        res = 0
+        for v1, v2 in zip(self._vecs[:-1], self._vecs[1:]):
+            res += v1.cross(v2)
+        return res
+
 
 def partition(pred, iterable):
     'Use a predicate to partition entries into false entries and true entries'
     # partition(is_odd, range(10)) -->  1 3 5 7 9  and  0 2 4 6 8
     t1, t2 = tee(iterable)
     return filter(pred, t1), filterfalse(pred, t2)
-
-
-class polygon(list):
-    def __new__(cls, *args, **kwargs):
-        """[summary]
-
-        Returns:
-            [type]: [description]
-        """
-        return list.__new__(cls, *args, **kwargs)
-
-    def area(self):
-        pass
 
 
 def create_test_polygon(lst):

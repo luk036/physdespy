@@ -1,37 +1,31 @@
 from itertools import filterfalse, tee
 
+from .recti import vector2
+
+
+class rpolygon:
+    def __init__(self, coords):
+        self._origin = coords[0]
+        self._vecs = list(c - coords[0] for c in coords[1:])
+
+    def __iadd__(self, rhs: vector2):
+        self._origin += rhs
+        return self
+
+    def signed_area(self):
+        yi = 0  # ???
+        res = 0
+        for v in self._vecs:
+            res += (v.y - yi) * v.x
+            yi = v.y
+        return res
+
 
 def partition(pred, iterable):
     'Use a predicate to partition entries into false entries and true entries'
     # partition(is_odd, range(10)) --> 0 2 4 6 8   and  1 3 5 7 9
     t1, t2 = tee(iterable)
     return filterfalse(pred, t1), filter(pred, t2)
-
-
-class rpolygon(list):
-    def __new__(cls, *args, **kwargs):
-        """[summary]
-
-        Returns:
-            [type]: [description]
-        """
-        return list.__new__(cls, *args, **kwargs)
-
-    def area(self):
-        """[summary]
-
-        Returns:
-            [type] -- [description]
-        """
-        cur = iter(self)
-        p0 = next(cur)
-        x0 = p0.x
-        yi = p0.y
-        sum = 0
-        for p in cur:
-            sum += (p.y - yi) * (p.x - x0)
-            yi = p.y
-        return sum
 
 
 def create_ymono_rpolygon(lst):

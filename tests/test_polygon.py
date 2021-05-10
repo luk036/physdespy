@@ -8,9 +8,4 @@ def test_polygon():
     S = [point(x, y) for (x, y) in coords]
 
     P = create_test_polygon(S)
-    print('----------------------')
-    # print(R2.area())
-    for v in P:
-        print(v)
-
-    # assert (False)
+    assert P.signed_area_x2() == 110

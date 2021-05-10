@@ -8,8 +8,7 @@ def test_RPolygon():
     S = [point(x, y) for (x, y) in coords]
 
     P = create_ymono_rpolygon(S)
-    print('----------------------')
-    for v in P:
-        print(v)
+
+    assert P.signed_area() == -50
 
     # assert (False)
