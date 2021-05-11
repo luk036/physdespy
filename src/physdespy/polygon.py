@@ -13,9 +13,10 @@ class polygon:
         return self
 
     def signed_area_x2(self):
-        res = 0
-        for v1, v2 in zip(self._vecs[:-1], self._vecs[1:]):
-            res += v1.cross(v2)
+        vecs = self._vecs
+        res = vecs[0].x * vecs[1].y - vecs[-1].x * vecs[-2].y
+        for v0, v1, v2 in zip(vecs[:-2], vecs[1:-1], vecs[2:]):
+            res += v1.x * (v2.y - v0.y)
         return res
 
 

@@ -13,11 +13,10 @@ class rpolygon:
         return self
 
     def signed_area(self):
-        yi = 0  # ???
-        res = 0
-        for v in self._vecs:
-            res += (v.y - yi) * v.x
-            yi = v.y
+        vecs = self._vecs
+        res = vecs[0].x * vecs[0].y
+        for v0, v1 in zip(vecs[:-1], vecs[1:]):
+            res += v1.x * (v1.y - v0.y)
         return res
 
 
