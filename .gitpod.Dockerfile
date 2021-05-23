@@ -49,26 +49,26 @@ RUN /opt/conda/bin/conda install -y -c conda-forge \
     pandoc-crossref \
     pandoc
 
-RUN /opt/conda/bin/pip install \
-    codecov \
-    coverage \
-    coveralls \
-    cvxpy \
-    jupyter \
-    matplotlib \
-    networkx \
-    numexpr \
-    numpy \
-    scipy \
-    flake8 \
-    mypy \
-    pre-commit \
-    pyqt5 \
-    pytest-benchmark \
-    pytest-cov \
-    pytest \
-    yapf \
-    lolcat
+# RUN /opt/conda/bin/pip install \
+#     codecov \
+#     coverage \
+#     coveralls \
+#     cvxpy \
+#     jupyter \
+#     matplotlib \
+#     networkx \
+#     numexpr \
+#     numpy \
+#     scipy \
+#     flake8 \
+#     mypy \
+#     pre-commit \
+#     pyqt5 \
+#     pytest-benchmark \
+#     pytest-cov \
+#     pytest \
+#     yapf \
+#     lolcat
 
 RUN chown -R gitpod:gitpod /opt/conda \
     && chmod -R 777 /opt/conda \
