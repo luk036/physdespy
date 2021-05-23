@@ -32,9 +32,11 @@ def create_ymono_rpolygon(lst):
     max_pt = max(lst, key=lambda a: (a.y, a.x))
     d = max_pt - min_pt
 
-    def r2l(a): return d.x*(a.y - min_pt.y) < (a.x - min_pt.x)*d.y
+    def r2l(a):
+        return d.x * (a.y - min_pt.y) < (a.x - min_pt.x) * d.y
 
-    def l2r(a): return d.x*(a.y - min_pt.y) > (a.x - min_pt.x)*d.y
+    def l2r(a):
+        return d.x * (a.y - min_pt.y) > (a.x - min_pt.x) * d.y
 
     [lst1, lst2] = partition(l2r, lst) if d.x < 0 \
         else partition(r2l, lst)
