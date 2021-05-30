@@ -44,31 +44,9 @@ class polygon:
 
 def partition(pred, iterable):
     'Use a predicate to partition entries into true entries and false entries'
-    # partition(is_odd, range(10)) -->   0 2 4 6 8 and 1 3 5 7 9
+    # partition(is_odd, range(10)) --> 1 9 3 7 5 and 4 0 8 2 6
     t1, t2 = tee(iterable)
     return filter(pred, t1), filterfalse(pred, t2)
-
-
-def create_ymono_polygon(lst):
-    """[summary]
-
-    Args:
-        lst ([type]): [description]
-
-    Returns:
-        [type]: [description]
-    """
-    topmost_pt = max(lst, key=lambda a: (a.y, a.x))
-    bottommost_pt = min(lst, key=lambda a: (a.y, a.x))
-    d = topmost_pt - bottommost_pt
-
-    def right_left(a):
-        return d.x * (a.y - bottommost_pt.y) < (a.x - bottommost_pt.x) * d.y
-
-    [lst1, lst2] = partition(right_left, lst)
-    lst1 = sorted(lst1, key=lambda a: (a.y, a.x))
-    lst2 = sorted(lst2, key=lambda a: (a.y, a.x), reverse=True)
-    return lst1 + lst2
 
 
 def create_xmono_polygon(lst):
@@ -80,19 +58,31 @@ def create_xmono_polygon(lst):
     Returns:
         [type] -- [description]
     """
-    rightmost_pt = max(lst, key=lambda a: (a.x, a.y))
-    leftmost_pt = min(lst, key=lambda a: (a.x, a.y))
-    d = rightmost_pt - leftmost_pt
-    # dy = rightmost_pt.y - leftmost_pt.y
-    # dx = rightmost_pt.x - leftmost_pt.x
+    leftmost = min(lst)
+    rightmost = max(lst)
+    d = rightmost - leftmost
+    [lst1, lst2] = partition(lambda a: d.cross(a - leftmost) <= 0, lst)
+    lst1 = sorted(lst1)
+    lst2 = sorted(lst2, reverse=True)
+    return lst1 + lst2
 
-    def right_left(a):
-        return d.y * (a.x - leftmost_pt.x) < (a.y - leftmost_pt.y) * d.x
 
-    [lst1, lst2] = partition(right_left, lst)
-    lst3 = sorted(lst1, key=lambda a: (a.x, a.y))
-    lst4 = sorted(lst2, key=lambda a: (a.x, a.y), reverse=True)
-    return lst3 + lst4
+def create_ymono_polygon(lst):
+    """[summary]
+
+    Args:
+        lst ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """
+    topmost = max(lst, key=lambda a: (a.y, a.x))
+    botmost = min(lst, key=lambda a: (a.y, a.x))
+    d = topmost - botmost
+    [lst1, lst2] = partition(lambda a: d.cross(a - botmost) <= 0, lst)
+    lst1 = sorted(lst1, key=lambda a: (a.y, a.x))
+    lst2 = sorted(lst2, key=lambda a: (a.y, a.x), reverse=True)
+    return lst1 + lst2
 
 
 def create_test_polygon(lst):
@@ -104,23 +94,22 @@ def create_test_polygon(lst):
     Returns:
         [type]: [description]
     """
-    topmost_pt = max(lst, key=lambda a: (a.y, a.x))
-    bottommost_pt = min(lst, key=lambda a: (a.y, a.x))
-    dx = topmost_pt.x - bottommost_pt.x
-    dy = topmost_pt.y - bottommost_pt.y
+    upmost = max(lst, key=lambda a: (a.y, a.x))
+    downmost = min(lst, key=lambda a: (a.y, a.x))
+    d = upmost - downmost
 
     def right_left(a):
-        return dx * (a.y - bottommost_pt.y) < (a.x - bottommost_pt.x) * dy
+        return d.x * (a.y - downmost.y) < (a.x - downmost.x) * d.y
 
     [lst1, lst2] = partition(right_left, lst)
     lst1 = list(lst1)  # note!!!!
     lst2 = list(lst2)  # note!!!!
-    topmost_pt1 = max(lst1, key=lambda a: (a.x, a.y))
-    [lst3, lst4] = partition(lambda a: a.y < topmost_pt1.y, lst1)
-    bottommost_pt2 = min(lst2, key=lambda a: (a.x, a.y))
-    [lst5, lst6] = partition(lambda a: a.y > bottommost_pt2.y, lst2)
+    upmost1 = max(lst1, key=lambda a: (a.x, a.y))
+    [lst3, lst4] = partition(lambda a: a.y < upmost1.y, lst1)
+    downmost2 = min(lst2, key=lambda a: (a.x, a.y))
+    [lst5, lst6] = partition(lambda a: a.y > downmost2.y, lst2)
 
-    if dx < 0:
+    if d.x < 0:
         lsta = sorted(lst6, key=lambda a: (a.x, a.y), reverse=True)
         lstb = sorted(lst5, key=lambda a: (a.y, a.x))
         lstc = sorted(lst4, key=lambda a: (a.x, a.y))

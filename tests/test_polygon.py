@@ -1,5 +1,10 @@
 from physdespy.halton_int import halton
-from physdespy.polygon import create_test_polygon, create_ymono_polygon, polygon
+from physdespy.polygon import (
+    create_test_polygon,
+    create_xmono_polygon,
+    create_ymono_polygon,
+    polygon
+)
 from physdespy.recti import point
 
 
@@ -24,6 +29,15 @@ def test_polygon2():
 
 
 def test_polygon3():
+    hgen = halton([2, 3], [11, 7])
+    coords = [hgen() for _ in range(20)]
+    S = [point(x, y) for x, y in coords]
+    S = create_xmono_polygon(S)
+    P = polygon(S)
+    assert P.signed_area_x2() == 3862080
+
+
+def test_polygon4():
     hgen = halton([3, 2], [7, 11])
     coords = [hgen() for _ in range(50)]
     S = create_test_polygon([point(x, y) for x, y in coords])

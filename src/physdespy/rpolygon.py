@@ -44,7 +44,7 @@ class rpolygon:
 
 def partition(pred, iterable):
     'Use a predicate to partition entries into true entries and false entries'
-    # partition(is_odd, range(10)) --> 0 2 4 6 8 and 1 3 5 7 9
+    # partition(is_odd, range(10)) --> 1 9 3 7 5 and 4 0 8 2 6
     t1, t2 = tee(iterable)
     return filter(pred, t1), filterfalse(pred, t2)
 
@@ -58,21 +58,16 @@ def create_ymono_rpolygon(lst):
     Returns:
         [type]: [description]
     """
-    min_pt = min(lst, key=lambda a: (a.y, a.x))
-    max_pt = max(lst, key=lambda a: (a.y, a.x))
-    d = max_pt - min_pt
-
-    def r2l(a):
-        return d.x * (a.y - min_pt.y) < (a.x - min_pt.x) * d.y
-
-    def l2r(a):
-        return d.x * (a.y - min_pt.y) > (a.x - min_pt.x) * d.y
-
-    [lst1, lst2] = partition(l2r, lst) if d.x > 0 \
-        else partition(r2l, lst)
+    botmost = min(lst, key=lambda a: (a.y, a.x))
+    topmost = max(lst, key=lambda a: (a.y, a.x))
+    is_anticlockwise = topmost.x >= botmost.x
+    if is_anticlockwise:
+        [lst1, lst2] = partition(lambda a: a.x >= botmost.x, lst)
+    else:
+        [lst1, lst2] = partition(lambda a: a.x < botmost.x, lst)
     lst1 = sorted(lst1, key=lambda a: (a.y, a.x))
     lst2 = sorted(lst2, key=lambda a: (a.y, a.x), reverse=True)
-    return lst1 + lst2
+    return lst1 + lst2, is_anticlockwise
 
 
 def create_xmono_rpolygon(lst):
@@ -84,22 +79,16 @@ def create_xmono_rpolygon(lst):
     Returns:
         [type]: [description]
     """
-    min_pt = min(lst, key=lambda a: (a.x, a.y))
-    max_pt = max(lst, key=lambda a: (a.x, a.y))
-    d = max_pt - min_pt
-
-    def r2l(a):
-        return d.y * (a.x - min_pt.x) < (a.y - min_pt.y) * d.x
-
-    def l2r(a):
-        return d.y * (a.x - min_pt.x) > (a.y - min_pt.y) * d.x
-
-    [lst1, lst2] = \
-        partition(l2r, lst) if d.y > 0 else \
-        partition(r2l, lst)
-    lst1 = sorted(lst1, key=lambda a: (a.x, a.y))
-    lst2 = sorted(lst2, key=lambda a: (a.x, a.y), reverse=True)
-    return lst1 + lst2
+    leftmost = min(lst)
+    rightmost = max(lst)
+    is_anticlockwise = rightmost.y <= leftmost.y
+    if is_anticlockwise:
+        [lst1, lst2] = partition(lambda a: a.y <= leftmost.y, lst)
+    else:
+        [lst1, lst2] = partition(lambda a: a.y > leftmost.y, lst)
+    lst1 = sorted(lst1)
+    lst2 = sorted(lst2, reverse=True)
+    return lst1 + lst2, is_anticlockwise
 
 
 def create_test_rpolygon(lst):
