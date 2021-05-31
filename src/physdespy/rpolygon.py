@@ -31,11 +31,30 @@ class rpolygon:
         Returns:
             [type]: [description]
         """
+        assert len(self._vecs) >= 1
         vecs = self._vecs
         res = vecs[0].x * vecs[0].y
         for v0, v1 in zip(vecs[:-1], vecs[1:]):
             res += v1.x * (v1.y - v0.y)
         return res
+
+    def contains(self, p):
+        """inclusively contains a point p
+
+        Args:
+            p ([type]): [description]
+
+        Returns:
+            [type]: [description]
+        """
+        q = p - self._origin
+        o = vector2(0, 0)
+        c = False
+        for v0, v1 in zip([o] + self._vecs, self._vecs + [o]):
+            if (v1.y <= q.y and q.y < v0.y) or (v0.y <= q.y and q.y < v1.y):
+                if v1.x > q.x:
+                    c = not c
+        return c
 
     def to_polygon(self):
         ''' @todo '''
@@ -58,13 +77,15 @@ def create_ymono_rpolygon(lst):
     Returns:
         [type]: [description]
     """
+    assert len(lst) >= 2
+
     botmost = min(lst, key=lambda a: (a.y, a.x))
     topmost = max(lst, key=lambda a: (a.y, a.x))
     is_anticlockwise = topmost.x >= botmost.x
     if is_anticlockwise:
         [lst1, lst2] = partition(lambda a: a.x >= botmost.x, lst)
     else:
-        [lst1, lst2] = partition(lambda a: a.x < botmost.x, lst)
+        [lst1, lst2] = partition(lambda a: a.x <= botmost.x, lst)
     lst1 = sorted(lst1, key=lambda a: (a.y, a.x))
     lst2 = sorted(lst2, key=lambda a: (a.y, a.x), reverse=True)
     return lst1 + lst2, is_anticlockwise
@@ -79,13 +100,15 @@ def create_xmono_rpolygon(lst):
     Returns:
         [type]: [description]
     """
+    assert len(lst) >= 2
+
     leftmost = min(lst)
     rightmost = max(lst)
     is_anticlockwise = rightmost.y <= leftmost.y
     if is_anticlockwise:
         [lst1, lst2] = partition(lambda a: a.y <= leftmost.y, lst)
     else:
-        [lst1, lst2] = partition(lambda a: a.y > leftmost.y, lst)
+        [lst1, lst2] = partition(lambda a: a.y >= leftmost.y, lst)
     lst1 = sorted(lst1)
     lst2 = sorted(lst2, reverse=True)
     return lst1 + lst2, is_anticlockwise
@@ -127,3 +150,24 @@ def create_test_rpolygon(lst):
         lstc = sorted(lst5, key=lambda a: (a.x, a.y), reverse=True)
         lstd = sorted(lst6, key=lambda a: (a.y, a.x), reverse=True)
     return lsta + lstb + lstc + lstd
+
+
+def point_in_rpolygon(S, q):
+    """point inclusively within a rpolygon
+
+    Args:
+        S ([type]): [description]
+        q ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """
+    c = False
+    p0 = S[-1]
+    for p1 in S:
+        if (p1.y <= q.y and q.y < p0.y) or \
+           (p0.y <= q.y and q.y < p1.y):
+            if p1.x > q.x:
+                c = not c
+        p0 = p1
+    return c

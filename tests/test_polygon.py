@@ -3,6 +3,7 @@ from physdespy.polygon import (
     create_test_polygon,
     create_xmono_polygon,
     create_ymono_polygon,
+    point_in_polygon,
     polygon
 )
 from physdespy.recti import point
@@ -41,10 +42,12 @@ def test_polygon4():
     hgen = halton([3, 2], [7, 11])
     coords = [hgen() for _ in range(50)]
     S = create_test_polygon([point(x, y) for x, y in coords])
-    for p in S:
-        print("{},{}".format(p.x, p.y), end=' ')
+    # for p in S:
+    #     print("{},{}".format(p.x, p.y), end=' ')
     P = polygon(S)
     assert P.signed_area_x2() == -4449600
+    qx, qy = hgen()
+    assert point_in_polygon(S, point(qx, qy))
 
 
 # def test_polygon3():
