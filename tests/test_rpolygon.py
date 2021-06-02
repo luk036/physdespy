@@ -50,7 +50,6 @@ def test_RPolygon4():
     for p1 in S:
         print("{},{} {},{}".format(p0.x, p0.y, p1.x, p0.y), end=' ')
         p0 = p1
-    print("{},{} {},{}".format(S[-1].x, S[-1].y, S[0].x, S[-1].y), end=' ')
     P = rpolygon(S)
     assert is_anticw
     assert P.signed_area() == 2001024
@@ -62,8 +61,19 @@ def test_RPolygon5():
     S = create_test_rpolygon([point(x, y) for x, y in coords])
     # for p1, p2 in zip(S, S[1:] + [S[0]]):
     #     print("{},{} {},{}".format(p1.x, p1.y, p2.x, p1.y), end=' ')
+    print('<svg viewBox="0 0 2187 2048" xmlns="http://www.w3.org/2000/svg">')
+    print('  <polygon points="', end=' ')
+    p0 = S[-1]
+    for p1 in S:
+        print("{},{} {},{}".format(p0.x, p0.y, p1.x, p0.y), end=' ')
+        p0 = p1
+    print('"')
+    print('  fill="#88C0D0" stroke="black" />')
+    for p in S:
+        print('  <circle cx="{}" cy="{}" r="10" />'.format(p.x, p.y))
+    qx, qy = hgen()
+    print('  <circle cx="{}" cy="{}" r="10" fill="#BF616A" />'.format(qx, qy))
+    print('</svg>')
     P = rpolygon(S)
     assert P.signed_area() == -2176416
-
-    qx, qy = hgen()
     assert point_in_rpolygon(S, point(qx, qy))

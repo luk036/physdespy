@@ -42,11 +42,19 @@ def test_polygon4():
     hgen = halton([3, 2], [7, 11])
     coords = [hgen() for _ in range(50)]
     S = create_test_polygon([point(x, y) for x, y in coords])
-    # for p in S:
-    #     print("{},{}".format(p.x, p.y), end=' ')
+    print('<svg viewBox="0 0 2187 2048" xmlns="http://www.w3.org/2000/svg">')
+    print('  <polygon points="', end=' ')
+    for p in S:
+        print("{},{}".format(p.x, p.y), end=' ')
+    print('"')
+    print('  fill="#88C0D0" stroke="black" />')
+    for p in S:
+        print('  <circle cx="{}" cy="{}" r="10" />'.format(p.x, p.y))
+    qx, qy = hgen()
+    print('  <circle cx="{}" cy="{}" r="10" fill="#BF616A" />'.format(qx, qy))
+    print('</svg>')
     P = polygon(S)
     assert P.signed_area_x2() == -4449600
-    qx, qy = hgen()
     assert point_in_polygon(S, point(qx, qy))
 
 

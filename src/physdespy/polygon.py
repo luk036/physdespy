@@ -38,29 +38,6 @@ class polygon:
             res += v1.x * (v2.y - v0.y)
         return res
 
-    def contains(self, p):
-        """[summary]
-
-        Args:
-            p ([type]): [description]
-
-        Returns:
-            [type]: [description]
-        """
-        q = p - self._origin
-        o = vector2(0, 0)
-        c = False
-        for v0, v1 in zip([o] + self._vecs, self._vecs + [o]):
-            if (v1.y <= q.y and q.y < v0.y) or (v0.y <= q.y and q.y < v1.y):
-                t = (q - v0).cross(v1 - v0)
-                if v1.y > v0.y:
-                    if t < 0:
-                        c = not c
-                else:  # v1.y < v0.y
-                    if t > 0:
-                        c = not c
-        return c
-
     def is_rectilinear(self):
         '''@todo '''
         pass
@@ -73,27 +50,27 @@ def partition(pred, iterable):
     return filter(pred, t1), filterfalse(pred, t2)
 
 
-def create_xmono_polygon(lst):
-    """[summary]
+# def create_xmono_polygon(lst):
+#     """[summary]
 
-    Arguments:
-        lst {[type]} -- [description]
+#     Arguments:
+#         lst {[type]} -- [description]
 
-    Returns:
-        [type] -- [description]
-    """
-    assert len(lst) >= 3
+#     Returns:
+#         [type] -- [description]
+#     """
+#     assert len(lst) >= 3
 
-    leftmost = min(lst)
-    rightmost = max(lst)
-    d = rightmost - leftmost
-    [lst1, lst2] = partition(lambda a: d.cross(a - leftmost) <= 0, lst)
-    lst1 = sorted(lst1)
-    lst2 = sorted(lst2, reverse=True)
-    return lst1 + lst2
+#     leftmost = min(lst)
+#     rightmost = max(lst)
+#     d = rightmost - leftmost
+#     [lst1, lst2] = partition(lambda a: d.cross(a - leftmost) <= 0, lst)
+#     lst1 = sorted(lst1)
+#     lst2 = sorted(lst2, reverse=True)
+#     return lst1 + lst2
 
 
-def create_ymono_polygon(lst):
+def create_mono_polygon(lst, dir):
     """[summary]
 
     Args:
@@ -104,13 +81,21 @@ def create_ymono_polygon(lst):
     """
     assert len(lst) >= 3
 
-    topmost = max(lst, key=lambda a: (a.y, a.x))
-    botmost = min(lst, key=lambda a: (a.y, a.x))
-    d = topmost - botmost
-    [lst1, lst2] = partition(lambda a: d.cross(a - botmost) <= 0, lst)
-    lst1 = sorted(lst1, key=lambda a: (a.y, a.x))
-    lst2 = sorted(lst2, key=lambda a: (a.y, a.x), reverse=True)
+    max_pt = max(lst, key=dir)
+    min_pt = min(lst, key=dir)
+    d = max_pt - min_pt
+    [lst1, lst2] = partition(lambda a: d.cross(a - min_pt) <= 0, lst)
+    lst1 = sorted(lst1, key=dir)
+    lst2 = sorted(lst2, key=dir, reverse=True)
     return lst1 + lst2
+
+
+def create_ymono_polygon(lst):
+    return create_mono_polygon(lst, lambda a: (a.y, a.x))
+
+
+def create_xmono_polygon(lst):
+    return create_mono_polygon(lst, lambda a: (a.x, a.y))
 
 
 def create_test_polygon(lst):
@@ -163,8 +148,8 @@ def point_in_polygon(S, q):
     c = False
     p0 = S[-1]
     for p1 in S:
-        if (p1.y <= q.y and q.y < p0.y) or \
-           (p0.y <= q.y and q.y < p1.y):
+        if (p1.y <= q.y and q.y < p0.y) \
+          or (p0.y <= q.y and q.y < p1.y):
             d = (q - p0).cross(p1 - p0)
             if p1.y > p0.y:
                 if d < 0:

@@ -165,8 +165,8 @@ def point_in_rpolygon(S, q):
     c = False
     p0 = S[-1]
     for p1 in S:
-        if (p1.y <= q.y and q.y < p0.y) or \
-           (p0.y <= q.y and q.y < p1.y):
+        if (p1.y <= q.y and q.y < p0.y) \
+          or (p0.y <= q.y and q.y < p1.y):
             if p1.x > q.x:
                 c = not c
         p0 = p1
