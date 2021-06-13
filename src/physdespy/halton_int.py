@@ -1,7 +1,7 @@
 from typing import List
 
 
-def vdc(k: int, base: int = 2, scale=10) -> int:
+def vdc(k: int, base: int = 2, scale: int = 10) -> int:
     """[summary]
 
     Arguments:
@@ -24,7 +24,7 @@ def vdc(k: int, base: int = 2, scale=10) -> int:
 
 
 class vdcorput:
-    def __init__(self, base: int = 2, scale=10):
+    def __init__(self, base: int = 2, scale: int = 10):
         """[summary]
 
         Args:

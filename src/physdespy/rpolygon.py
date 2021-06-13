@@ -153,7 +153,17 @@ def create_test_rpolygon(lst):
 
 
 def point_in_rpolygon(S, q):
-    """point inclusively within a rpolygon
+    """determine if a point is within a rpolygon
+
+    The code below is from Wm. Randolph Franklin <wrf@ecse.rpi.edu>
+    (see URL below) with some minor modifications for rectilinear. It returns
+    true for strictly interior points, false for strictly exterior, and ub
+    for points on the boundary.  The boundary behavior is complex but
+    determined; in particular, for a partition of a region into polygons,
+    each point is "in" exactly one polygon.
+    (See p.243 of [O'Rourke (C)] for a discussion of boundary behavior.)
+
+    See http://www.faqs.org/faqs/graphics/algorithms-faq/ Subject 2.03
 
     Args:
         S ([type]): [description]
