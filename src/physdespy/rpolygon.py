@@ -4,7 +4,7 @@ from .recti import vector2
 
 
 class rpolygon:
-    def __init__(self, coords):
+    def __init__(self, coords: list):
         """[summary]
 
         Args:
