@@ -9,6 +9,7 @@ def vdc(k: int, base: int = 2, scale: int = 10) -> int:
 
     Keyword Arguments:
         base (int): [description] (default: {2})
+        scale (int): [description] (default: {10})
 
     Returns:
         int: [description]
